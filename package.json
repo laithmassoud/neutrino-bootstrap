@@ -1,0 +1,32 @@
+{
+  "name": "neutrino-bootstrap",
+  "version": "1.0.0",
+  "description": "an exercise about neutrino and bootstrap",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "neutrino build",
+    "start": "neutrino start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laithmassoud/neutrino-bootstrap.git"
+  },
+  "keywords": [
+    "neutrino"
+  ],
+  "author": "Laith Massoud",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/laithmassoud/neutrino-bootstrap/issues"
+  },
+  "homepage": "https://github.com/laithmassoud/neutrino-bootstrap#readme",
+  "devDependencies": {
+    "neutrino": "^7.3.3",
+    "neutrino-preset-airbnb-base": "^7.3.3",
+    "neutrino-preset-web": "^7.3.3"
+  },
+  "dependencies": {
+    "jquery": "^3.2.1"
+  }
+}
