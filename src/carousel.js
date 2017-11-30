@@ -2,9 +2,8 @@ import $ from 'jquery';
 import carouselTemplate from './templates/carousel.html';
 import carouselItemTemplate from './templates/carousel-item.html';
 
-
 function mkIndicator(number) {
-  return $(`<li data-target="#carousel-indicators" data-slide-to="${number}" class="active"></li>`);
+  return $(`<li data-target="#carousel-indicators" data-slide-to="${number}"></li>`);
 }
 
 function mkSlide(item) {
@@ -13,10 +12,13 @@ function mkSlide(item) {
   return $el;
 }
 
- export default function mkCarousel(items) {
+export default function mkCarousel(items) {
+  // we create a jQuery object
   const $el = $(carouselTemplate);
+  // we create a reference to the elements in which we want to put things
   const $indicators = $el.find('.carousel-indicators');
   const $slides = $el.find('.carousel-inner');
+
   items.forEach((item, number) => {
     const $indicator = mkIndicator(number);
     const $slide = mkSlide(item);
