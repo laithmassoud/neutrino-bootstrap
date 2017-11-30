@@ -1,8 +1,8 @@
 module.exports = {
 
-   Option:{
+   options:{
     output:'docs'
-   }
+   },
    
   use: [
     ['neutrino-preset-airbnb-base'],
