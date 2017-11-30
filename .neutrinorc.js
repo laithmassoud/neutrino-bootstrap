@@ -1,4 +1,9 @@
 module.exports = {
+
+   Option:{
+    output:'docs'
+   }
+   
   use: [
     ['neutrino-preset-airbnb-base'],
     ['neutrino-middleware-styles-loader'],
