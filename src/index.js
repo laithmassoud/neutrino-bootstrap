@@ -1,37 +1,65 @@
+//  import core files
 import $ from 'jquery';
 import 'bootstrap/js/src';
 import './styles.scss';
 import navbarTemplate from './templates/navbar.html';
+import modalTemplate from './templates/modal.html';
 import mkCarousel from './carousel';
-import mkproductsGrid from './productsGrid';
+import refreshProducts from './products';
 
-
-function updateNavbar(categories) {
-  const $navbarNav = $('.navbar-nav').empty();
-  categories.forEach((category) => {
-    $navbarNav.append(`<li class="nav-item">
-      <a class="nav-link" href="#">${category.name}</a>
-    </li>`);
-  });
-}
-
+//  append navbar
 $(() => {
-  $('#root').append(navbarTemplate);
+  $('#root').append(modalTemplate)
+    .append(navbarTemplate);
+  $('#cart').click(((e) => {
+    e.preventDefault();
+    $('.shopping-cart').toggle('fast', (() => {
+    }));
+  }));
+  //  read categories
   $.ajax('./static/categories.json')
     .done((categories) => {
+      //  populate carousel with categories
       const $carousel = mkCarousel(categories);
       $('#root').append($carousel);
-      // because the HTML of the carousel
-      // is added after the page loads,
-      // we need to initialize the
-      // Bootstrap carousel ourselves
       $carousel.carousel();
-      updateNavbar(categories);
+
+      //  Iterate over the categories and append to navbar
+      categories.forEach((category, number) => {
+        $('.navbar-nav').append(`
+            <li class="nav-item">
+            <a class="nav-link" data-id="${number}" data-name="${category.name}" href="#">${category.name}</a>
+            </li>`);
+      });
+    })
+    //  or fail trying
+    .fail((xhr, status, error) => {
+      $('#root').append(`<div>Ajax Error categories: ${error}</div>`);
     });
+
+  //  ajax req and append products grid
   $.ajax('./static/products.json')
     .done((products) => {
-      const $productsGrid = mkproductsGrid(products);
-      $('#root').append($productsGrid);
+      //  append products-grid after carousel
+      $('#root').append(`<div class="infobox"><h2 id="infos">All products (${Object.keys(products).length})</h2></div>`);
+      $('#root').append('<div id="products-grid" class="container-fluid"></div>');
+      //  populate products-grid with products
+      $('#products-grid').append('<div class="row"></div>');
+      refreshProducts(products, '-1');
+      // click event handler on nav-links
+      $('.nav-link').click((eventObj) => {
+        eventObj.preventDefault();
+        const { target } = eventObj;
+        const linkName = target.getAttribute('data-id');
+        $('.navbar-nav .active').removeClass('active');
+        $(target).closest('li').addClass('active');
+        //  clean the products-grid and update the content
+        refreshProducts(products, linkName);
+      });
+    })
+    //  or fail trying
+    .fail((xhr, status, error) => {
+      $('#root').append(`<div>Ajax Error products: ${error}</div>`);
     });
+  // End
 });
-
